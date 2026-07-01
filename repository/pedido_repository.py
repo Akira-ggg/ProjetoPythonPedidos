@@ -1,12 +1,21 @@
 from models.pedidos import Pedidos
+from pathlib import Path
 
 
 class repository:
-    dados = "dataBase/Pedidos.txt"
+
+    def __init__(self):
+        self.pasta = Path("dataBase")
+        self.arquivo = self.pasta / "Pedidos"
+        if not self.pasta.exists():
+            self.pasta.mkdir()
+
+        if not self.arquivo.exists():
+            self.arquivo.touch()
 
     def lista(self):
         lista_pedidos = []
-        with open(self.dados, "r", encoding="utf-8") as arquivo:
+        with open(self.arquivo, "r", encoding="utf-8") as arquivo:
 
             for linha in arquivo:
                 vetor = linha.strip().split(";")
@@ -17,8 +26,11 @@ class repository:
                 lista_pedidos.append(base)
         return lista_pedidos
 
-    def adicionar(self, pedidos):
+    def adicionar(self, pedido):
         lista = self.lista()
-        with open(self.dados, "a", encoding="utf-8") as arquivo:
-            linha = pedidos.nome + ";" + pedidos.quantidade + ";" + pedidos.preco + "\n"
+        for pedido_existe in lista:
+            if pedido_existe.nome == pedido.nome:
+                raise Exception("Pedido ja existe")
+        with open(self.arquivo, "a", encoding="utf-8") as arquivo:
+            linha = pedido.nome + ";" + str(pedido.quantidade) + ";" + str(pedido.preco )+ "\n"
             arquivo.write(linha)
