@@ -8,5 +8,5 @@ preco = float(input("Qual o preco "))
 
 pedido = Pedidos(nome,quantidade,preco)
 rp = repository()
-rp.adicionar(pedido)
+rp.adicionarSql(pedido)
 
