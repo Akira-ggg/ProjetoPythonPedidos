@@ -56,7 +56,11 @@ class repository:
             arquivo.write(linha)
 
 
-    def adicionarSql(self, pedido):
+    def adicionarSql(self,pedido):
+        lista = self.filtro()
+        for pediso_existe in lista:
+            if pediso_existe.id == pedido.id:
+                raise Exception("Pedido ja existe")
         self.cursor.execute("""
            INSERT INTO pedidos(nome, quantidade, preco)
                             VALUES (?,?,?)
@@ -66,6 +70,26 @@ class repository:
 
          """, (pedido.nome, pedido.quantidade, pedido.preco))
         self.connection.commit()
+
+    def filtro(self):
+        lista = []
+        self.cursor.execute("""SELECT id, nome, quantidade, preco FROM Pedidos""")
+        for linha in self.cursor.fetchall():
+            pedidos = Pedidos(
+                linha[0],
+                linha[1],
+                linha[2],
+                linha[3]
+
+
+            )
+            lista.append(pedidos)
+        return lista
+        
+
+
+        
+
         
         
         

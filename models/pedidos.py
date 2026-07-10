@@ -1,9 +1,17 @@
 class Pedidos:
-    def __init__(self,nome,quantidade,preco):
+    def __init__(self,id ,nome,quantidade,preco):
+        self.__id = id
         self.__nome = nome
         self.__quantidade = quantidade
         self.__preco = preco
 
+    
+    @property
+    def id(self):
+        return self.__id
+    @id.setter
+    def id(self,id):
+        self.__id = id
     @property
     def nome(self):
         return self.__nome
